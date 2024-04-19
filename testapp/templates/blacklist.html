@@ -1,0 +1,103 @@
+{% extends 'header.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'users.css' %}" >
+<body>
+    <div id="main">
+        <div id="title">
+            <h3>Blacklist</h3> 
+            <button id="add" onclick=" openForm('formModal')">Add to blacklist</button><a href="{% url 'blacklist_report' %}" class="approve-btn">Generate Blacklist Report</a>
+            {% if warning %}<p style="color: red;">{{warning}}</p>{% endif %}
+            {% if success %}<p style="color: green;">{{success}}</p>{% endif %}
+            {% if error %}<p style="color: red;">{{error}}</p>{% endif %}
+        </div>
+        <div class="card" id="search">
+            <b>Search</b>
+            <form method="get"><label for="searchkey"> Key words:</label>
+                
+                <select id="searchkey" name="searchkey">
+                    <option value="blacklistid">Blacklist Id</option>
+                    <option value="transactionid">Transaction Id</option>
+                </select>
+                <label for="form"> Value</label>
+                <input id="form" type="number" name="form">
+                <input type="submit" name="action" value="search">
+                <input type="submit" name="action" value="Get Report">
+            </form>
+           
+        </div>
+        <div id="formModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeForm()">&times;</span>
+                <form method='post' action="{% url 'blacklists' %}">
+                    {% csrf_token %}
+                    <label for="transactionid" id="labela" ><b>Transaction Id:</b></label><br>
+                    <input type="number" id="transactionid" name="transactionid"required><br>
+                        <b>Category:</b><br>
+                    <input type="radio" id="true positive" name="category" value="true positive">
+                    <label for="true positive">True positive</label><br>
+                    <input type="radio" id="false negative" name="category" value="false negative">
+                    <label for="false negative">False negative</label><br>
+                    
+                    <input type="submit" id="black" name="action" value="Add" >
+                </form>
+            </div>
+        </div>
+        <div class="modal" id="myModal">
+            <div class="modal-content" id="modalContent">
+                <p id="modalMessage"></p>
+            </div>
+        </div>
+       
+        <div class="card" style="background-color: #ffffff;">
+            Item count:{{count}}
+            <table id="myTable">
+                <thead>
+                    <tr>
+                        <th>Blacklist Id</th>
+                        <th>Transaction Id</th>
+                        <th>Category</th>
+                         <th>Actions</th>
+                         <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for items in set %}
+                        <tr>
+                            <td>{{ items.blacklistid }}</td>
+                            <td>{{ items.transactionid }}</td>
+                            <td>{{ items.category }}</td>
+                            <td>
+                                <button id="change" onclick="openModal('changes')">Change Entry</button>
+                            </td> 
+                                <div id="changes" class="modal" style='color:black; width:300px;'>
+                                    <form method='post' action="{% url 'blacklists' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden"  name="item_value" value='{{ items.blacklistid }}'> 
+                                    (Transaction Id and Blacklist Id are unchangeable)<br>                                
+                                   
+                                        <b>Category:</b><br>
+                                    <input type="radio" id="true positive" name="category" value="true positive">
+                                    <label for="true positive">True positive</label><br>
+                                    <input type="radio" id="false negative" name="category" value="false negative">
+                                    <label for="false negative">False negative</label><br>
+                                    <input type="submit" id="create" name="action" value="change">
+                                </form></div>
+                                <td>
+                                    <form method="post" action="{% url 'blacklists' %}">{% csrf_token %}
+                                        <input type="hidden" id="deleteUserId" name="item_value" value='{{ items.blacklistid }}'>
+                                    <button type="submit"id='delete' name="action" value="delete"  >Delete Entry</form></td> 
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>     
+        <div class="overlay" id="overlay" onclick="closeModal('change')"></div> 
+        <div class="success-popup" id="successPopup">
+            <p>  Done !</p>
+        </div>
+    </div>
+    <script src="{% static 'blacklist.js' %}"></script>
+</body>
+{% endblock %}

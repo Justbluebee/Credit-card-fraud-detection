@@ -1,0 +1,65 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'model.css' %}" >
+<body>
+ 
+  <div id="main"><div class="card">
+  <h2>System Settings</h2>
+  <p>
+    <form id="SettingsForm" method="post">
+      {% csrf_token %}
+      
+      <label for="settings_class">Settings class:</label>
+      <select id="settings_class" name="name">
+        <option value="settings class" id="general" selected>General</option>
+        <!-- <option value="settings class">Specific</option> -->
+      </select><br>
+
+      <!-- <label for="station">Stations:</label><br>
+      <input type="checkbox" name="station" value="all" selected>All<br>
+      <input type="checkbox" name="station" value="Thika01">Thika01<br>
+      <input type="checkbox" name="station" value="Thika02">Thika02<br>
+      <input type="checkbox" name="station" value="Kiambu01">Kiambu01<br>
+      <input type="checkbox" name="station" value="Kiambu02">Kiambu02<br>
+      <input type="checkbox" name="station" value="Online01">Online01<br>
+      <input type="checkbox" name="station" value="Online02">Online02<br>
+      <br> -->
+
+      <!-- <label for="location">Locations:</label><br>
+      <input type="checkbox" name="location" value="all" selected>All<br>
+      <input type="checkbox" name="location" value="Thika">Thika<br>
+      <input type="checkbox" name="location" value="Kiambu">Kiambu<br>
+      <input type="checkbox" name="location" value="Online">Online<br>
+      -->
+
+      <label for="automate " id="automate" ><b>Automate:</b></label><br>
+      <select id="automate" name="name">
+        <option value="automate all">Automate all</option>
+        <option value="automate by station">Automate by station</option>
+        <option value="automate by location">Automate by location</option>
+        <option value="none" selected>No automation</option>
+      </select>
+      <br>
+
+      <input type="checkbox" id="enforce" name="enforce" value="enforce"><b>Enforce Blacklist</b><br>
+
+      <label for="blacklist"><b>Add to blacklist:</b></label><br>
+      <input type="checkbox" name="blacklist_add" value="rejected alerts" selected>Add rejected alerts automatically<br>
+      <input type="checkbox" name="blacklist_add" value="false negatives">Add false negatives automatically<br>
+      <input type="checkbox" name="blacklist_add" value="none">Manually add<br>
+      <br>
+
+      <label for="reports"><b>Add to reports:</b></label><br>
+      <select id="reports" name="name">
+        <option value="auto">Automatically generate reports from allowed transactions</option>
+        <option value="redirect">Redirect the user to manually create a report after allowing a flagged transaction</option>
+        <option value="none" selected>Do not redirect the user or generate a report automatically</option>
+      </select>
+      <br>
+
+      <button type="submit" class="approve-btn" >Save Settings</button>
+    </form>
+  </p></div></div>
+</body>
+{% endblock %}

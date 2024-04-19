@@ -1,0 +1,145 @@
+body {
+    margin: 0;
+    padding:0;
+   
+    font-family: 'Arial', sans-serif;
+    
+}
+html {
+    margin: 0;
+    padding: 0;
+}
+
+#topBar {
+    margin: 0;
+    padding: 0;
+    -webkit-text-fill-color: black;
+    background-color:#8e99f3;/* #bec0d6;*/
+    color: #fff;
+    padding: 40px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+#logo{
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top:0;
+    left:0;
+    bottom:60px;
+    z-index: 2;
+}
+#user{
+    position: absolute;
+    top: 10px; /* Adjust the top spacing as needed */
+    left: 250px;
+    padding: 15px;
+    -webkit-text-fill-color: black;
+
+}
+#settings{
+   
+    position: absolute;
+    top: 10px; /* Adjust the top spacing as needed */
+    right: 200px;
+    padding: 15px;
+}
+#logout{
+    position: absolute;
+    top: 20px; /* Adjust the top spacing as needed */
+    right: 100px;
+    padding: 15px;
+
+}
+#sideMenu {
+    margin: 0;
+    padding: 0;
+    font-family:'Roboto', 'Arial';
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    top: 80px; /* Adjusted from 0 to accommodate the top bar */
+    left: 0;
+    background-color: #1a237e; /*#808080;/*#555555;/*#3498db;/*#5c68e6;/*#bec0d6;/*#5c68e6;/*#390099;#0077b6;#bec0d6; */
+    z-index: 1000;
+    color: #fff;
+    box-shadow: 3px 0 5px rgba(0, 0, 0, 0.1); /* Add box shadow to the right */
+    
+}
+#support{
+    bottom:20px;
+    left:10px;
+    position:fixed;
+}
+#sideMenu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    left: 0;
+    right: 200px;
+    width: 200px;
+    z-index: 1001;
+}
+
+
+#sideMenu ul li {
+    left: 20px;
+    right: 180px;
+    display: block;
+    
+    font-size: medium;
+    border-bottom: 1px solid #0e0d0d;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+#sideMenu ul li a{
+    left:20px;
+    right:180px;
+    display: block;
+    padding: 20px;
+    
+
+}
+
+#sideMenu ul li:hover {
+    background-color: #999999; 
+}
+
+
+#sideMenu ul li.active,
+#sideMenu ul li:focus {
+    background-color: #6282a0; /* Set your desired active color */
+}
+
+#content {
+    margin-top:80px;
+    margin-left: 200px; /* Adjusted from 0 to accommodate the side menu */
+    padding-top: 20px;
+    padding-left: 0;
+    background-color:#f0f0f0;
+    text-decoration: none;
+    
+}
+a {
+    color: #f0f0f0;/*#1d3557; /* Set your desired link color */
+    text-decoration: none; /* Optional: Remove underlines */
+}
+#alert{
+    width: 25px;
+    height: 20px;
+}
+/* 
+#footer {
+    background-color: #1a237e;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+} */

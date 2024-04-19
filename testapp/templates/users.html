@@ -1,0 +1,211 @@
+{% extends 'header.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'users.css' %}" >
+
+<body>
+    
+    <div id="main">
+        <div id="title">
+            <h3>Users</h3><a href="{% url 'staff_report' %}" class="approve-btn">Generate Staff Report</a>
+           
+                <!-- <label for="username"><b>Username:</b></label><br>
+                <input type="text" id="username" name="username" required><br>
+                <label for="password"><b>Password:</b></label><br>
+                <input type="password" id="password"  name="password"><br>
+               
+                <label for="email"><b>Email:</b></label><br>
+                <input type="email" id="email" name="email"><br>
+                <label for="staffid"><b>Staff Id:</b></label><br>
+                <input type="number" id="staffid" name="staffid" min="1000" max="10000000" required><br>
+                
+                    <b>Roles:</b><br>
+                <label for="department">Department:</label>
+                <select id="department" name="department">
+                    {% if under.agent %}
+                    <option value="agent">agent </option>{% endif %}
+                    {% if under.manager%}
+                    <option value="manager">manager </option>{% endif %}
+                    {% if under.support_staff %}
+                    <option value="support staff">support staff</option>{% endif %}
+                
+                </select><br>
+                <label for="location">Location:</label>
+                <select id="location" name="location">
+                   <option value="Kiambu">Kiambu </option>
+                    <option value="Thika">Thika</option>
+                    <option value="Online">Online</option>
+                </select><br>
+                <label for="station">station:</label>
+                <select id="station" name="station">
+                    <option value="01">01 </option>
+                    <option value="02">02</option>
+                    <option value="both">both</option>
+                </select><br>
+                <label for="active"><b>Is active(can use the system)</b></label><br>
+                <label for="true">active</label><br>
+                <input type="radio" id="is active" name="active" value="True"><br>
+                <label for="inactive">inactive</label><br>
+                <input type="radio" id="inactive" name="active" value="False"><br>
+                
+                <input id="create" type="submit" name="action" value="create" > -->
+            </form>
+            <button id="add" onclick=" openForm('formModal')">Add user</button> 
+            
+            {% if warning %}<p style="color: red;">{{warning}}</p>{% endif %}
+            {% if success %}<p style="color: green;">{{success}}</p>{% endif %}
+            {% if error %}<p style="color: red;">{{error}}</p>{% endif %}
+        </div>
+        <div id="formModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeForm()">&times;</span>
+                <form method='post' action="{% url 'adminpanel' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit"name="action" value="create">Register</button>
+                    <!-- <label for="username"><b>Username:</b></label><br>
+                    <input type="text" id="username" name="username" required><br>
+                    <label for="password"><b>Password:</b></label><br>
+                    <input type="password" id="password"  name="password"><br>
+                   
+                    <label for="email"><b>Email:</b></label><br>
+                    <input type="email" id="email" name="email"><br>
+                    <label for="staffid"><b>Staff Id:</b></label><br>
+                    <input type="number" id="staffid" name="staffid" min="1000" max="10000000" required><br>
+                    
+                        <b>Roles:</b><br>
+                    <label for="department">Department:</label>
+                    <select id="department" name="department">
+                        {% if under.agent %}
+                        <option value="agent">agent </option>{% endif %}
+                        {% if under.manager%}
+                        <option value="manager">manager </option>{% endif %}
+                        {% if under.support_staff %}
+                        <option value="support staff">support staff</option>{% endif %}
+                    
+                    </select><br>
+                    <label for="location">Location:</label>
+                    <select id="location" name="location">
+                       <option value="Kiambu">Kiambu </option>
+                        <option value="Thika">Thika</option>
+                        <option value="Online">Online</option>
+                    </select><br>
+                    <label for="station">station:</label>
+                    <select id="station" name="station">
+                        <option value="01">01 </option>
+                        <option value="02">02</option>
+                        <option value="both">both</option>
+                    </select><br>
+                    <label for="active"><b>Is active(can use the system)</b></label><br>
+                    <label for="true">active</label><br>
+                    <input type="radio" id="is active" name="active" value="True"><br>
+                    <label for="inactive">inactive</label><br>
+                    <input type="radio" id="inactive" name="active" value="False"><br>
+                    
+                    <input id="create" type="submit" name="action" value="create" > -->
+                </form>
+            </div></div>
+       
+
+        <div class="modal" id="myModal">
+            <div class="modal-content" id="modalContent">
+                <p id="modalMessage"></p>
+            </div>
+        </div>
+
+        <div class="card" style="background-color: #ffffff;">
+            <table id="myTable">
+                <thead>
+                    <tr><th>username</th>
+                        <th>Staff Id</th>
+                        <th>Department</th>
+                        <th>Location</th>
+                        <th>email</th>
+                        <th>Actions</th>
+                        <th>
+                           
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for items in list %}
+                        <tr><td>{{ items.username }}</td>
+                            <td>{{ items.staffid }}</td>
+                            <td>{{ items.department }}</td>
+                            <td>{{ items.location}}</td>
+                            <td>{{ items.email }}</td>
+                           
+                       
+                         {% if administrator %}  <td>
+                            <button id="change" onclick=" openModal('changes')">Change user</button></td>
+                            <div id="changes" class="modal"style='color:black; width:300px;' >
+                                <form method='post' action="{% url 'adminpanel' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item_value" value='{{ items.staffid }}'>
+                                    <B><h3>Change user details</h3></B><br>
+                                    <label for="staffid"><b>Staff Id :</b></label><br>
+                                    <input type="number" id="staffid" selected="{{ items.staffid }}" name="staffid" min="1000" max="10000000" required><br>
+                                   
+                                    <label for="username"><b>Username:</b></label><br>
+                                    <input type="text" id="username" selected="{{ items.username }}" name="username"><br>
+                                   
+                                    <label for="email"><b>Email:</b></label><br>
+                                    <input type="email" id="email" selected="{{ items.email }}" name="email"><br>
+                                 
+                                    
+                                        <b>Roles:</b><br>
+                                    <label for="department">Department:</label>
+                                    <select id="department" name="department" selected="{{ items.department }}">
+                                        {% if under.agent %}
+                                        <option value="agent">agent </option>{% endif %}
+                                        {% if under.manager%}
+                                        <option value="manager">manager </option>{% endif %}
+                                        {% if under.support_staff %}
+                                        <option value="support staff">support staff</option>{% endif %}
+                                    
+                                    </select><br>
+                                    <label for="location">Location:</label>
+                                    <select id="location" name="location" selected="{{ items.location}}">
+                                       <option value="Kiambu">Kiambu </option>
+                                        <option value="Thika">Thika</option>
+                                        <option value="Online">Online</option>
+                                    </select><br>
+                                    <label for="station">station:</label>
+                                    <select id="station" name="station" >
+                                        <option value="01">01 </option>
+                                        <option value="02">02</option>
+                                        <option value="both">both</option>
+                                    </select><br>
+                                    <label for="active"><b>Is active(can use the system)</b></label><br>
+                                    <label for="true">active</label><br>
+                                    <input type="radio" id="is active" name="active" value=True><br>
+                                    <label for="inactive">inactive</label><br>
+                                    <input type="radio" id="inactive" name="active" value=False><br>
+                                    
+                                    <input id="create" type="submit" name="action" value="change user" >
+                                </form>
+                            </div><td>
+                            <form method="post" action="{% url 'adminpanel' %}">{% csrf_token %}
+                                <input type="hidden" id="deleteUserId" name="item_value" value='{{ items.staffid }}'>
+                            <button type="submit"id='delete' name="action" value="delete"  >Delete User</form></td>  
+                           {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        
+        </div>
+        
+
+        <!-- Overlay -->
+        <div class="overlay" id="overlay" onclick="closeModal('changes')"></div>
+
+        <!-- Success message pop-up -->
+        <div class="success-popup" id="successPopup">
+            <p>  Done !</p>
+        </div>
+    </div>
+
+    <script src="{% static 'blacklist.js' %}"></script>
+</body>
+{% endblock %}

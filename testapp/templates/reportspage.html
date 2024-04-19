@@ -1,0 +1,132 @@
+{% extends 'header.html' %}{% load static %}{% block content %}
+<link rel="stylesheet" href="{% static 'reports.css' %}" >
+
+<body>
+    <div id="main"><div id="title"> <h2>Reports</h2> <button id="add" onclick=" openModal(event)">Create report entry</button> <a href="{% url 'false_report' %}" id="add">Generate Detailed Report</a></div>
+   
+    <div class="card" id="search">
+        <b>Search</b>
+        <form method="get"><label for="searchkey"> Key words:</label>
+           
+            <select id="searchkey" name="searchkey">
+                <option value="reportid">Report Id</option>
+                <option value="transactionid">Transaction Id</option>
+                <option value="staffid">Staff Id</option>
+                
+            </select>
+            <label for="form"> Value</label>
+            <input id="form" type="number" name="form">
+            <input type="submit" name="action" value="search">
+            <input type="submit" name="action" value="Get Report">
+        </form>
+       
+    </div>
+        
+        <!-- <form id="dataCollectionForm"onsubmit="submitForm(event)"method='post' >
+            {% csrf_token %}
+
+
+          <div id="filter" class="card " ><h3>Filter Reports</h3>
+                <button id="showCustomTimeBtn" type="button">Filter by</button>{% if time_view %}Filtered values:{{time_view}}{{endif}}<br>
+                <div id="custom-time-dropdown" style="display: none;">
+                    <label for="custom_start_date">Start Date:</label>
+                    <input type="date" id="custom_start_date" name="custom_start_date" value="2020-01-01">
+
+                    <label for="custom_end_date">End Date:</label>
+                    <input type="date" id="custom_end_date" name="custom_end_date" value="2034-12-31">
+
+                    
+                    <label for="customTimeOptions">Custom Time View:</label>
+                    <select id="customTimeOptions" name="customTimeOptions">
+                        <option value="lastDay">Last Day</option>
+                        <option value="lastWeek">Last Week</option>
+                        <option value="lastMonth">Last Month</option>
+                        <option value="lastThreeMonths">Last Three Months</option>
+                        <option value="lastSixMonths">Last Six Months</option>
+                        <option value="lastYear">Last Year</option>
+                        <option value="allTime"  >All Time</option> 
+                    </select>
+
+                  
+                    <button id="customTimeSubmitBtn" type="button">Apply</button>
+                </div>
+             -->
+
+        
+<!-- 
+            <button type="submit" class="approve-btn" value="submit">Apply</button> -->
+     
+
+    <p>
+       
+        <div id="formModal" class="modal">
+
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <form method='post' action="{% url 'reports' %}">
+                    {% csrf_token %}
+                    <label for="transactionid">Transaction Id:</label><br>
+                    <input type="text" id="transactionid" name="transactionid"><br>
+                        Report type:<br>
+                    <input type="radio" id="false positive" name="report_status" value="false positive">
+                    <label for="false positive">False positive</label><br>
+                    <input type="radio" id="false negative" name="report_status" value="false negative">
+                    <label for="false negative">False negative</label><br>
+                    <input type="submit" name="action" value="submit" >
+                </form>
+            </div>
+        </div><div id="overlay"></div>
+        
+    </p>
+</div>
+    
+  {% if count %}
+  <div class="card" style="background-color: #ffffff;">
+    <table>
+        <thead>
+            <tr>
+                <th>Report Id</th>
+                <th>Transaction Id</th>
+                <th>Staff Id</th>
+                <th>Report Status</th>
+                <th>Timestamp</th>
+                {% if allowed %}
+                <th>Actions</th><th></th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for items in filter %}
+                <tr>
+                    <td>{{ items.reportid }}</td>
+                    <td>{{ items.transactionid }}</td>
+                    <td>{{ items.staffid }}</td>
+                    <td>{{ items.report_status}}</td>
+                    <td>{{ items.timestamp }}</td>{% if items.verification == 'waiting' %}
+                    {% if waiting %}
+                    {% if allowed %}
+                    <td>
+                        <form method="post" action="{% url 'reports' %}">
+                            <input type="hidden" name="item_value" value="{{ items }}">
+                            {% csrf_token %}
+                            <button type="submit" class="approve-btn" name="action" value="verify">Verify Report</button>
+                        </form></td><td>
+                        <form method="post" action="{% url 'reports' %}">{% csrf_token %}
+                            <input type="hidden" name="item_value" value='{{ items.reportid}}'>
+                        <button type="submit"id='delete' class="reject-btn" name="action" value="delete"  >Delete Report</form></td>  
+                    </td>
+                    {% else %}<td>{{ items.verification }}</td>{% endif %}{% endif %}{% else %}<td>{{ items.verification }}</td>{% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>{% endif %}
+
+</div><div id="overlay"></div>
+  
+   
+{% endif %}
+   
+    <script src="{% static 'homepage.js' %}"></script>
+    <script src="{% static 'report.js' %}"></script>
+</body>{% endblock %}
